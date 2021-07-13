@@ -1,0 +1,11 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+
+# Django stuff:
+*.log
+local_settings.Pycharmdb.sqlite3
+db.sqlite3-journal
+
+#Pycharm
+.idea/
