@@ -19,7 +19,7 @@
           <tr onClick="location.href='{{ p.get_absolute_url }}'">
               <td>{{ p.pk }}</td>
               <td>{{ p.title }}</td>
-              <td>작성자</td>
+              <td>{{ p.author }}</td>
               <td>{{ p.created_at }}</td>
               <td>조회수</td>
           </tr>
