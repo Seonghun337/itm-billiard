@@ -3,41 +3,45 @@
 {% block main_area %}
 
 <h2>Forum</h2>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>번호</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>날짜</th>
-            <th>조회수</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% if post_list.exists %}
-        {% for p in post_list %}
-        <tr onClick="location.href='{{ p.get_absolute_url }}'">
-            <td>{{ p.pk }}</td>
-            <td>{{ p.title }}</td>
-            <td>작성자</td>
-            <td>{{ p.created_at }}</td>
-            <td>조회수</td>
-        </tr>
-        {% endfor %}
-        {% else %}
-        <h3>아직 게시물이 없습니다.</h3>
-        {% endif %}
-    </tbody>
-</table>
+  <table class="table table-hover">
+      <thead>
+          <tr>
+              <th>번호</th>
+              <th>제목</th>
+              <th>작성자</th>
+              <th>날짜</th>
+              <th>조회수</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% if post_list.exists %}
+          {% for p in post_list %}
+          <tr onClick="location.href='{{ p.get_absolute_url }}'">
+              <td>{{ p.pk }}</td>
+              <td>{{ p.title }}</td>
+              <td>작성자</td>
+              <td>{{ p.created_at }}</td>
+              <td>조회수</td>
+          </tr>
+          {% endfor %}
+          {% else %}
+          <h3>아직 게시물이 없습니다.</h3>
+          {% endif %}
+      </tbody>
+  </table>
 </hr>
-<div class="text-center">
-    <ul class="pagination">
-        <li><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#">Next</a>
+      </li>
     </ul>
-</div>
+</nav>
 
 {% endblock %}
