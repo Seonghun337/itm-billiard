@@ -1,16 +1,25 @@
+from django.contrib.auth.models import Permission
 from django.shortcuts import redirect, render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
-from .models import Post
+from .models import Post, Comment
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from .forms import CommentForm
+from django.shortcuts import get_object_or_404
 
 class PostList(ListView):
     model = Post
-    template_name = 'forum/index.html'
+    # template_name = 'forum/index.html'
     ordering = '-pk'
+    paginate_by = 5
 
 class PostDetail(DetailView):
     model = Post
+
+    def get_context_data(self, **kwargs):
+        context = super(PostDetail, self).get_context_data()
+        context['comment_form'] = CommentForm
+        return context
 
 class PostCreate(CreateView):
     model = Post
@@ -33,26 +42,39 @@ class PostUpdate(LoginRequiredMixin, UpdateView):
             return super(PostUpdate, self).dispatch(request, *args, **kwargs)
         else:
             raise PermissionDenied
-# Create your views here.
-# def index(request):
-#     posts = Post.objects.all().order_by('-pk')
 
+def new_comment(request, pk):
+    if request.user.is_authenticated:
+        post = get_object_or_404(Post, pk=pk)
 
-#     return render(
-#         request,
-#         'forum/index.html',
-#         {
-#             'posts': posts,
-#         }
-#     )
+        if request.method == 'POST':
+            comment_form = CommentForm(request.POST)
+            if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
+                comment.post = post
+                comment.author = request.user
+                comment.save()
+                return redirect(comment.get_absolute_url())
+        else:
+            return redirect(post.get_absolute_url())
+    else:
+        raise PermissionDenied
 
-# def single_post_page(request, pk):
-#     post = Post.objects.get(pk=pk)
+def delete_comment(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    post = comment.post
+    if request.user.is_authenticated and request.user == comment.author:
+        comment.delete()
+        return redirect(post.get_absolute_url())
+    else:
+        raise PermissionDenied
 
-#     return render(
-#         request,
-#         'forum/single_post_page.html',
-#         {
-#             'post': post,
-#         }
-#     )
+class CommentUpdate(LoginRequiredMixin, UpdateView):
+    model = Comment
+    form_class = CommentForm
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user == self.get_object().author:
+            return super(CommentUpdate, self).dispatch(request, *args, **kwargs)
+        else:
+            raise PermissionDenied
