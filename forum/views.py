@@ -1,6 +1,8 @@
 from django.shortcuts import redirect, render
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from .models import Post
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 class PostList(ListView):
     model = Post
@@ -22,6 +24,15 @@ class PostCreate(CreateView):
         else:
             return redirect('/forum/')
 
+class PostUpdate(LoginRequiredMixin, UpdateView):
+    model = Post
+    fields = ['title', 'content']
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user == self.get_object().author:
+            return super(PostUpdate, self).dispatch(request, *args, **kwargs)
+        else:
+            raise PermissionDenied
 # Create your views here.
 # def index(request):
 #     posts = Post.objects.all().order_by('-pk')

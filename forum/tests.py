@@ -105,3 +105,7 @@ class TestView(TestCase):
         main_area = soup.find('div', id='main-area')
         self.assertIn('Create New Post', main_area.text)
         
+    # def test_update_post(self):
+        # update_post_url = f'/forum/update_post/{self.post_003.pk}'
+
+        # response = self.client.get()
