@@ -44,21 +44,24 @@
     {% if post.comment_set.exists %}
     {% for comment in post.comment_set.iterator %}
     <div class="media mb-4" id="comment-{{ comment.pk }}">
-        <img class="d-flex mr-3 rounded-circle" src="{{ comment.get_avatar_url }}" alt="{{ comment.author }}" width="60px">
+        <img class="d-flex mr-3 rounded-circle" src="{{ comment.get_avatar_url }}" alt="{{ comment.author }}"
+            width="60px">
         <div class="media-body">
             {% if user.is_authenticated and comment.author == user %}
             <div class="float-right">
+                <a role="button" class="btn btn-sm btn-danger mx-2" id="comment-{{comment.pk}}-delete-modal-btn" href="#"
+                    data-toggle="modal" data-target="#deleteCommentModal-{{ comment.pk }}">
+                    삭제
+                </a>
                 <a role="button" class="btn btn-sm btn-info float-right" id="comment-{{comment.pk}}-update-btn"
                     href="/forum/update_comment/{{comment.pk}}/">
                     수정
                 </a>
-                <a role="butotn" class="btn btn-sm btn-danger" id="comment-{{comment.pk}}-delete-modal-btn" href="#"
-                    data-toggle="modal" data-target="#deleteCommentModal-{{ comment.pk }}">
-                    삭제
-                </a>
+
             </div>
 
-            <div class="modal fade" id="deleteCommentModal-{{ comment.pk}}" tabindex="-1" role="dialog" aria-labelledby="deleteCommentModalLabel" area-hidden="true">
+            <div class="modal fade" id="deleteCommentModal-{{ comment.pk}}" tabindex="-1" role="dialog"
+                aria-labelledby="deleteCommentModalLabel" area-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
