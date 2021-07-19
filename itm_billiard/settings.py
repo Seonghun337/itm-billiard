@@ -140,13 +140,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+
+LOGIN_REDIRECT_URL = '/'
+# LOGIN_URL = '/'
+
 AUTHENTICATION_BACKENDS = (
+    # 'user.oauth.backends.NaverBackend',
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
+# SOCIALACCOUNT_AUTO_SIGNUP=False
+
 SITE_ID = 1
 
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'none'
-LOGIN_REDIRECT_URL = '/home/'
+# AUTH_USER_MODEL = 'user.User'
+# ACCOUNT_EMAIL_REQUIRED = True?>ㅡ><LOGIN_REDIRECT_URL = '/'

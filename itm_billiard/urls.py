@@ -17,11 +17,13 @@ from django.contrib import admin
 from django.urls import path
 
 from django.conf.urls import include
+# from user.views import SocialLoginCallbackView
+
 
 urlpatterns = [
     path('forum/', include('forum.urls')),
     path('admin/', admin.site.urls),
-    path('accounts/', include('allauth.urls')),
+    path('accounts/', include('user.urls')),
     path('markdownx/', include('markdownx.urls')),
     path('', include('dashboard.urls')),
     

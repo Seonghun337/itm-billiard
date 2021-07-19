@@ -27,10 +27,16 @@
                         <img class="rounded-circle" width="25px" src="https://doitdjango.com/avatar/id/224/fd62aa66379a006e/svg/{{self.author.username}}@gmail.com/">
                         {% endif %}
                         &nbsp;
-                        {{ user.username }}
+                        <!-- {{ user.username }} -->
+                        {{ user.socialaccount_set.all.0.extra_data.name }}
+
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="/accounts/logout/">Log Out</a>
+                        <form method="post" action="{% url 'account_logout' %}">
+                            {% csrf_token %}
+                            <button class="dropdown-item" type="submit">Log Out</button>
+                        </form>
+                        
                     </div>
                 </li>
                 {% else %}
@@ -57,8 +63,10 @@
                         <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="{% provider_login_url 'google' %}"><i
                                 class="fab fa-google"></i>&nbsp&nbsp Log in with Google</a>
                                 
-                        <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="{% provider_login_url 'naver' %}"><i
-                                class="fab fa-neos"></i>&nbsp&nbsp Log in with Naver&nbsp;&nbsp;&nbsp;</a>
+                        <!-- <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="{% provider_login_url 'naver' %}"><i
+                                class="fab fa-neos"></i>&nbsp&nbsp Log in with Naver&nbsp;&nbsp;&nbsp;</a> -->
+                                <!-- <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="#" onclick="naverLogin()"><i
+                                    class="fab fa-neos"></i>&nbsp&nbsp Log in with Naver&nbsp;&nbsp;&nbsp;</a> -->
                     </div>
                 </div>
             </div>
