@@ -1,0 +1,121 @@
+{% load crispy_forms_tags %}
+{% csrf_token %}
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="form-check mr-4">
+            <input class="form-check-input" type="radio" onclick="createPlayerInputs(event)" name="num_players"
+                id="flexRadioDefault1" value=2 checked>
+            <label class="form-check-label" for="flexRadioDefault1">
+                2인
+            </label>
+        </div>
+        <div class="form-check mr-4">
+            <input class="form-check-input" type="radio" onclick="createPlayerInputs(event)" name="num_players"
+                id="flexRadioDefault2" value=3>
+            <label class="form-check-label" for="flexRadioDefault2">
+                3인
+            </label>
+        </div>
+        <div class="form-check mr-4">
+            <input class="form-check-input" type="radio" onclick="createPlayerInputs(event)" name="num_players"
+                id="flexRadioDefault2" value=4>
+            <label class="form-check-label" for="flexRadioDefault3">
+                4인
+            </label>
+        </div>
+    </div>
+    <div id="player_inputs">
+        <h5>Winner</h5>
+        <hr>
+        
+
+        <div id="player_1" class="row mb-5">
+            <select name="player_1_name" form="game-form" id="player_1" class="form-select">
+                <option selected>플레이어 선택</option>
+                {% for u in user_list %}
+                <option value="{{u.username}}">{{u.first_name}}</option>
+                {% endfor %}
+            </select>
+            <label for="player_1_score" class="form-label my-auto ml-4 mr-2">점수</label>
+            <input name="player_1_score" type="range" value=100 class="form-range" onchange="showScore(this.id)" min=50
+                max=400 step=10 id="player_1_score">
+            <label for="player_1_score" class="form-label my-auto ml-4 mr-2 score" id="player_1_score_value">100</label>
+            <button type="button" class="btn" value="player_1_score" onclick="incrementScore(event)">+</button>
+            <button type="button" class="btn" value="player_1_score" onclick="decrementScore(event)">-</button>
+        </div>
+
+        <div id="player_3" class="row mb-5">
+            <select name="player_3_name" form="game-form" id="player_1" class="form-select">
+                <option selected>플레이어 선택</option>
+                {% for u in user_list %}
+                <option value="{{u.username}}">{{u.first_name}}</option>
+                {% endfor %}
+            </select>
+            <label for="player_3_score" class="form-label my-auto ml-4 mr-2">점수</label>
+            <input name="player_3_score" type="range" value=100 class="form-range" onchange="showScore(this.id)" min=50
+                max=400 step=10 id="player_3_score">
+            <label for="player_3_score" class="form-label my-auto ml-4 mr-2 score" id="player_3_score_value">100</label>
+            <button type="button" class="btn" value="player_3_score" onclick="incrementScore(event)">+</button>
+            <button type="button" class="btn" value="player_3_score" onclick="decrementScore(event)">-</button>
+        </div>
+
+
+        <h5>Loser</h5>
+        <hr>
+
+
+
+        <div id="player_2" class="row mb-5">
+            <select name="player_2_name" form="game-form" id="player_2" class="form-select">
+                <option selected>플레이어 선택</option>
+                {% for u in user_list %}
+                <option value="{{u.username}}">{{u.first_name}}</option>
+                {% endfor %}
+            </select>
+            <label for="player_2_score" class="form-label my-auto ml-4 mr-2">점수</label>
+            <input name="player_2_score" type="range" value=100 class="form-range" onchange="showScore(this.id)" min=50
+                max=400 step=10 id="player_2_score">
+            <label for="player_2_score" class="form-label my-auto ml-4 mr-2 score" id="player_2_score_value">100</label>
+            <button type="button" class="btn" value="player_2_score" onclick="incrementScore(event)">+</button>
+            <button type="button" class="btn" value="player_2_score" onclick="decrementScore(event)">-</button>
+        </div>
+
+        <div id="player_4" class="row mb-5">
+            <select name="player_4_name" form="game-form" id="player_1" class="form-select">
+                <option selected>플레이어 선택</option>
+                {% for u in user_list %}
+                <option value="{{u.username}}">{{u.first_name}}</option>
+                {% endfor %}
+            </select>
+            <label for="player_4_score" class="form-label my-auto ml-4 mr-2">점수</label>
+            <input name="player_4_score" type="range" value=100 class="form-range" onchange="showScore(this.id)" min=50
+                max=400 step=10 id="player_4_score">
+            <label for="player_4_score" class="form-label my-auto ml-4 mr-2 score" id="player_4_score_value">100</label>
+            <button type="button" class="btn" value="player_4_score" onclick="incrementScore(event)">+</button>
+            <button type="button" class="btn" value="player_4_score" onclick="decrementScore(event)">-</button>
+        </div>
+        <!-- </div> -->
+    </div>
+</div>
+
+
+
+
+
+<!-- {% for i in "x"|rjust:"2" %}
+        <div class="row mb-5">
+            <select name="player[2]" form="game-form" id="player_2" class="form-select" aria-label="Default select example">
+                <option selected>플레이어 선택</option>
+                {% for u in user_list %}
+                <option value="{{u}}">{{u}}</option>
+                {% endfor %}
+            </select>
+            <label for="score_{{forloop.counter}}" class="form-label my-auto ml-4 mr-2">점수</label>
+            <input name="score[{{forloop.counter}}]" type="range" value=100 class="form-range" onchange="showScore(this.id)" min=50
+                max=400 step=10 id="score_2">
+            <label for="score_{{forloop.counter}}" class="form-label my-auto ml-4 mr-2 score" id="score_2_value">100</label>
+            <button type="button" class="btn" value="score_2" onclick="incrementScore(event)">+</button>
+            <button type="button" class="btn" value="score_2" onclick="decrementScore(event)">-</button>
+        </div>
+        {% endfor %} -->

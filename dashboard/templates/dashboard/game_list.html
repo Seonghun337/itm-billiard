@@ -1,0 +1,141 @@
+{% extends 'forum/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block main_area %}
+<div class="container">
+    <div class="row" style="min-height: 360px;">
+        <div class="col">
+            <h3 class="">유저보드</h3>
+            <table class="table mb-auto" id="user-board">
+                <thead>
+                    <th class="col-1">#</th>
+                    <th class="col-3">이름</th>
+                    <th class="col-2">승률</th>
+                    <th class="col-2">게임 수</th>
+                    <th class="col-2">점수</th>
+                </thead>
+
+                {% for rank in rank_list %}
+                {% if rank.best_user %}
+                <tr class="table-success" id="rank_tr_{{ forloop.counter0 }}">
+                    {% elif rank.worst_user %}
+                <tr class="table-danger" id="rank_tr_{{ forloop.counter0 }}">
+                    {% else %}
+                <tr id="rank_tr_{{ forloop.counter0 }}">
+                    {% endif %}
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ rank.name }}</td>
+                    <td>{{ rank.win_rate }}</td>
+                    <td>{{ rank.n_games }}</td>
+                    <td>{{ rank.avr_score }}</td>
+                </tr>
+
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="float-right" id="rank-pagination"></div>
+        </div>
+    </div>
+    <script>
+        var n_games = {{ n_games }};
+
+        var n_rank = {{ n_rank }};
+    </script>
+
+    <div class="row">
+        <div class="col">
+            <h3>전적</h3>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="#" data-toggle="modal"
+                data-target="#createGameModal">새 기록 입력하기</a>
+        </div>
+    </div>
+    <div class="row" style="min-height: 330px;">
+        <div class="col">
+            <table class="table mb-4">
+                <thead>
+                    <tr>
+                        <th class="col-2">날짜</th>
+                        <th class="col-3">승</th>
+                        <th class="col-3">패</th>
+                        <th class="col-4">점수</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for game in game_list %}
+                    <tr id="game_tr_{{ forloop.counter0 }}">
+                        <td>{{game.played_at.date | date:'Y/m/d'}}</td>
+                        <td>
+                            {% for score in game.score_set.iterator %}
+                            {% if score.win %}
+                            {{score.player.first_name}}
+                            {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% for score in game.score_set.iterator %}
+                            {% if not score.win %}
+                            {{score.player.first_name}}
+                            {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% for score in game.score_set.iterator %}
+
+                            {{score.score}}
+                            {% if not forloop.last %}
+                            &nbsp; / &nbsp;
+                            {% endif %}
+                            {% endfor %}
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="game-pagination"></div>
+
+</div>
+
+<div class="modal fade" id="createGameModal" tabindex="-1" aria-labelledby="createGameModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createGameModalLabel">기록 작성</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form id="game-form" method="POST" action="/create_game/">
+                {%csrf_token %}
+                <div class="modal-body">
+                    {% include "dashboard/game_form.html" %}
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-secondary">제출하기</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+<!-- <nav aria-label='...'>
+    <ul class='pagination pagination-sm'>
+        <li class='page-item'>
+            < class='page-link' onclick='game_pagination(event)'>1</a>
+        </li>
+    </ul>
+</nav> -->

@@ -1,15 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import User
+# from datetime import date
+from django.utils import timezone
 
-# Create your models here.
 
 class Game(models.Model):
-    played_at = models.DateTimeField()
-    winners = models.ManyToManyField(User, blank=True, related_name='win')
-    losers = models.ManyToManyField(User, blank=True, related_name='lose')
+    played_at = models.DateTimeField(auto_now_add=True)
     num_players = models.IntegerField()
 
+
+# Create your models here.
 class Score(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     player = models.ForeignKey(User, on_delete=models.CASCADE)
     score = models.IntegerField()
+    win = models.BooleanField()
+
+    class Meta:
+        ordering=['win','player']

@@ -7,5 +7,5 @@ from . import views
 
 urlpatterns = [
     path('<provider>/login/callback', views.social_login),
-    path('/', admin.site.urls),
+    path('', include('allauth.urls')),
 ]
