@@ -19,6 +19,8 @@ from django.urls import path
 from django.conf.urls import include
 # from user.views import SocialLoginCallbackView
 
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('forum/', include('forum.urls')),
@@ -28,3 +30,5 @@ urlpatterns = [
     path('', include('dashboard.urls')),
     
 ]
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
