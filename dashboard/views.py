@@ -46,9 +46,9 @@ class GameList(ListView):
                     avrScore = avrScore + winGame.score
                     avrScore = avrScore / winGames.count()
             tmp['avr_score'] = avrScore
-            if tmp['win_rate'] >= 0.8:
+            if tmp['win_rate'] >= 80:
                 tmp['best_user'] = True
-            if tmp['win_rate'] <= 0.2:
+            if tmp['win_rate'] <= 20:
                 tmp['worst_user'] = True
 
             rank.append(tmp)
