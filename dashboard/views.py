@@ -44,7 +44,10 @@ class GameList(ListView):
             if winGames.exists:
                 for winGame in winGames:
                     avrScore = avrScore + winGame.score
-                avrScore = avrScore / winGames.count()
+
+                if winGames.count() != 0:
+                    avrScore = avrScore / winGames.count()
+                
             tmp['avr_score'] = avrScore
             if tmp['win_rate'] >= 80:
                 tmp['best_user'] = True
