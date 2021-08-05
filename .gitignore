@@ -13,3 +13,5 @@ migrations/
 
 .env.prod
 .env.prod.db
+
+docker-compose.yml
